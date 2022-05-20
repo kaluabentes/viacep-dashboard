@@ -25,6 +25,8 @@
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/mixins.scss";
+
 .navbar {
   background: var(--color-primary);
   color: var(--color-white);
@@ -47,6 +49,8 @@
   }
 
   &__organization {
+    @include reset-button;
+
     height: 3.75rem;
     width: 17rem;
     border: 2px solid var(--color-white);
@@ -55,10 +59,8 @@
     flex-direction: column;
     justify-content: center;
     padding: 0 1rem;
-    background: transparent;
     color: var(--color-white);
     font-family: var(--font-family);
-    cursor: pointer;
 
     &-title {
       font-size: 1rem;
@@ -77,11 +79,9 @@
   }
 
   &__notification-button {
-    background: transparent;
-    border: none;
-    outline: none;
+    @include reset-button;
+
     padding: 1rem;
-    cursor: pointer;
   }
 
   &__separator {
@@ -98,9 +98,7 @@
   }
 
   &__profile-button {
-    background: transparent;
-    border: none;
-    outline: none;
+    @include reset-button;
   }
 }
 </style>

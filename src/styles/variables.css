@@ -1,6 +1,9 @@
 :root {
   --color-primary: #9206e9;
   --color-white: #fff;
+  --color-gray: #f7f7f7;
+  --color-gray-2: #e5e5e5;
+  --color-dark: #20272c;
 
   --font-family: "Open Sans", sans-serif;
 }

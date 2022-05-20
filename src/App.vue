@@ -5,7 +5,7 @@ import AppLayout from "./components/layouts/AppLayout.vue";
 
 <template>
   <AppLayout>
-    <TheWelcome />
+    <h1>Dashboard</h1>
   </AppLayout>
 </template>
 
