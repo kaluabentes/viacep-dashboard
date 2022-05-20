@@ -7,7 +7,7 @@ import SideNav from "../core/SideNav.vue";
   <NavBar />
   <div class="container">
     <SideNav />
-    <main>
+    <main class="main">
       <slot></slot>
     </main>
   </div>
@@ -19,5 +19,9 @@ import SideNav from "../core/SideNav.vue";
   height: calc(100vh - 5rem);
   background: var(--color-gray);
   align-items: stretch;
+}
+
+.main {
+  width: 100%;
 }
 </style>
