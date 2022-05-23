@@ -52,6 +52,7 @@ const props = defineProps({
   align-items: center;
   box-shadow: 0px 4px 20px rgba(32, 39, 44, 0.1);
   border-radius: 8px;
+  background: var(--color-white);
 
   &__column {
     display: flex;

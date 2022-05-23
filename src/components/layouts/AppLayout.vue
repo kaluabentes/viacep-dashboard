@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import NavBar from "@/components/core/NavBar.vue";
-import SideNav from "../core/SideNav.vue";
+import SideNav from "@/components/core/SideNav.vue";
 </script>
 
 <template>
@@ -17,7 +17,6 @@ import SideNav from "../core/SideNav.vue";
 .container {
   display: flex;
   height: calc(100vh - 5rem);
-  background: var(--color-gray);
   align-items: stretch;
 }
 

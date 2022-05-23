@@ -35,20 +35,22 @@ const addresses = [
 
 <template>
   <AppLayout>
-    <div class="form__grid">
-      <Input
-        id="zipcode"
-        name="zipcode"
-        placeholder="Insira o CEP"
-        :value="zipcode"
-        @on-change="handleZipCodeChange"
-      />
-      <CoreButton>
-        <template #icon>
-          <img src="@/assets/icone-plus.svg" alt="" />
-        </template>
-        Adicionar endereço
-      </CoreButton>
+    <div class="container">
+      <div class="button-grid">
+        <Input
+          id="zipcode"
+          name="zipcode"
+          placeholder="Insira o CEP"
+          :value="zipcode"
+          @on-change="handleZipCodeChange"
+        />
+        <CoreButton>
+          <template #icon>
+            <img src="@/assets/icone-plus.svg" alt="" />
+          </template>
+          Adicionar endereço
+        </CoreButton>
+      </div>
       <div class="zipcode-list">
         <ZipCodeCard
           v-for="zipcode in zipcodes"
@@ -56,26 +58,48 @@ const addresses = [
           :key="zipcode"
         />
       </div>
-      <CoreButton>Gerar endereços</CoreButton>
+      <div class="button-grid">
+        <div></div>
+        <CoreButton>Gerar endereços</CoreButton>
+      </div>
+      <CoreSeparator />
+      <div class="address-card__list">
+        <AddressCard
+          v-for="address in addresses"
+          :key="address.id"
+          :address="address.address"
+          :city="address.city"
+          :state="address.state"
+          :zipcode="address.zipcode"
+        />
+      </div>
     </div>
-    <CoreSeparator />
-    <AddressCard
-      v-for="address in addresses"
-      :key="address.id"
-      :address="address.address"
-      :city="address.city"
-      :state="address.state"
-      :zipcode="address.zipcode"
-    />
   </AppLayout>
 </template>
 
-<style>
-@import "@/styles/main.css";
-
+<style scoped lang="scss">
 .zipcode-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin: 3.75rem 0;
+}
+
+.container {
+  max-width: 37.5rem;
+  width: 100%;
+  padding: 2.5rem;
+}
+
+.address-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
 }
 </style>
