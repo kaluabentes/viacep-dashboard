@@ -1,9 +1,14 @@
 :root {
   --color-primary: #9206e9;
+  --color-primary-dark: #6c01af;
+  --color-primary-link: #b600ee;
   --color-white: #fff;
   --color-gray: #f7f7f7;
   --color-gray-2: #e5e5e5;
   --color-gray-3: #bbc4ce;
+  --color-gray-4: #b7b7b7;
+  --color-gray-5: #e0e6ea;
+  --color-gray-6: #424e59;
   --color-dark: #20272c;
 
   --font-family: "Open Sans", sans-serif;

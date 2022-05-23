@@ -25,7 +25,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1.5rem 0;
+  padding: 1.5rem;
 
   &__menu {
     display: flex;

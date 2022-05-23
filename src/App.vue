@@ -1,16 +1,36 @@
 <script setup lang="ts">
+import { ref } from "vue";
+
 import AppLayout from "./components/layouts/AppLayout.vue";
 import Input from "./components/core/Input.vue";
-import Button from "./components/core/Button.vue";
-import Separator from "./components/core/Separator.vue";
+import CoreButton from "./components/core/CoreButton.vue";
+import CoreSeparator from "./components/core/CoreSeparator.vue";
+import ZipCodeCard from "./components/core/ZipCodeCard.vue";
 import AddressCard from "./components/core/AddressCard.vue";
-import { ref } from "vue";
 
 const zipcode = ref("");
 
 const handleZipCodeChange = (value: string) => {
   zipcode.value = value;
 };
+
+const zipcodes = ["38304-042", "87030-010"];
+const addresses = [
+  {
+    id: 1,
+    address: "Av. São Paulo, Zona 07",
+    city: "Maringá",
+    state: "PR",
+    zipcode: "87030-025",
+  },
+  {
+    id: 2,
+    address: "Av. São Paulo, Zona 07",
+    city: "Maringá",
+    state: "PR",
+    zipcode: "87030-025",
+  },
+];
 </script>
 
 <template>
@@ -23,19 +43,39 @@ const handleZipCodeChange = (value: string) => {
         :value="zipcode"
         @on-change="handleZipCodeChange"
       />
-      <Button>
-        <img src="@/assets/icone-plus.svg" alt="" />
+      <CoreButton>
+        <template #icon>
+          <img src="@/assets/icone-plus.svg" alt="" />
+        </template>
         Adicionar endereço
-      </Button>
+      </CoreButton>
       <div class="zipcode-list">
-        <AddressCard />
+        <ZipCodeCard
+          v-for="zipcode in zipcodes"
+          :zipcode="zipcode"
+          :key="zipcode"
+        />
       </div>
-      <Button>Gerar endereços</Button>
+      <CoreButton>Gerar endereços</CoreButton>
     </div>
-    <Separator />
+    <CoreSeparator />
+    <AddressCard
+      v-for="address in addresses"
+      :key="address.id"
+      :address="address.address"
+      :city="address.city"
+      :state="address.state"
+      :zipcode="address.zipcode"
+    />
   </AppLayout>
 </template>
 
 <style>
 @import "@/styles/main.css";
+
+.zipcode-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 </style>
