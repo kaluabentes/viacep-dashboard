@@ -9,7 +9,7 @@
     </div>
     <div class="address-card__column">
       <p class="address-card__zipcode">{{ props.zipcode }}</p>
-      <button class="address-card__delete-button">
+      <button class="address-card__delete-button" @click="emits('on-delete')">
         <img
           class="address-card__delete-icon"
           src="@/assets/icone-lixo.svg"
@@ -39,6 +39,7 @@ const props = defineProps({
     required: true,
   },
 });
+const emits = defineEmits(["on-delete"]);
 </script>
 
 <style scoped lang="scss">

@@ -1,40 +1,68 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import axios from "axios";
 
 import AppLayout from "./components/layouts/AppLayout.vue";
-import Input from "./components/core/Input.vue";
+import CoreInput from "./components/core/CoreInput.vue";
 import CoreButton from "./components/core/CoreButton.vue";
 import CoreSeparator from "./components/core/CoreSeparator.vue";
 import ZipCodeCard from "./components/core/ZipCodeCard.vue";
 import AddressCard from "./components/core/AddressCard.vue";
+import type { Address } from "./models/address";
 
 const zipcode = ref("");
+const error = ref("");
 
 const zipcodes = ref<string[]>([]);
-const addresses = [
-  {
-    id: 1,
-    address: "Av. São Paulo, Zona 07",
-    city: "Maringá",
-    state: "PR",
-    zipcode: "87030-025",
-  },
-  {
-    id: 2,
-    address: "Av. São Paulo, Zona 07",
-    city: "Maringá",
-    state: "PR",
-    zipcode: "87030-025",
-  },
-];
-
-const handleZipCodeChange = (value: string) => {
-  zipcode.value = value;
-};
+const addresses = ref<Address[]>([]);
+const isLoadingAddresses = ref(false);
 
 const handleAddAddress = () => {
+  if (!zipcode.value.length) {
+    error.value = "O campo de cep é obrigatório";
+    return;
+  }
+
+  if (zipcodes.value.includes(zipcode.value)) {
+    error.value = "O cep já existe";
+    return;
+  }
+
+  error.value = "";
   zipcodes.value = [...zipcodes.value, zipcode.value];
   zipcode.value = "";
+};
+
+const handleGenerateAddress = async () => {
+  try {
+    isLoadingAddresses.value = true;
+
+    const addressesPromises = zipcodes.value.map(async (zipcodeValue) => {
+      return axios.get(`https://viacep.com.br/ws/${zipcodeValue}/json/`);
+    });
+
+    const addressesResponses = await Promise.all(addressesPromises);
+    const filteredData = addressesResponses.map((response) => ({
+      id: response.data.cep,
+      address: response.data.logradouro,
+      city: response.data.localidade,
+      state: response.data.uf,
+      zipcode: response.data.cep,
+    }));
+    addresses.value = filteredData.filter((address) => address.zipcode);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.log(error.message);
+  } finally {
+    isLoadingAddresses.value = false;
+  }
+};
+
+const handleDeleteAddress = (zipcode: string) => {
+  addresses.value = addresses.value.filter(
+    (address) => address.zipcode !== zipcode
+  );
 };
 </script>
 
@@ -42,12 +70,13 @@ const handleAddAddress = () => {
   <AppLayout>
     <div class="container">
       <div class="button-grid">
-        <Input
+        <CoreInput
           id="zipcode"
           name="zipcode"
           placeholder="Insira o CEP"
-          :value="zipcode"
-          @on-change="handleZipCodeChange"
+          max-length="8"
+          v-model="zipcode"
+          :error="error"
         />
         <CoreButton @on-click="handleAddAddress">
           <template #icon>
@@ -65,7 +94,12 @@ const handleAddAddress = () => {
       </div>
       <div class="button-grid">
         <div></div>
-        <CoreButton>Gerar endereços</CoreButton>
+        <CoreButton
+          @on-click="handleGenerateAddress"
+          :is-loading="isLoadingAddresses"
+        >
+          Gerar endereços
+        </CoreButton>
       </div>
       <CoreSeparator />
       <div class="address-card__list">
@@ -76,6 +110,7 @@ const handleAddAddress = () => {
           :city="address.city"
           :state="address.state"
           :zipcode="address.zipcode"
+          @on-delete="() => handleDeleteAddress(address.zipcode)"
         />
       </div>
     </div>

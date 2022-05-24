@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = defineProps({
-  value: {
+  modelValue: {
     type: String,
     required: true,
   },
@@ -16,24 +16,36 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  maxLength: {
+    type: String,
+    required: true,
+  },
+  error: {
+    type: String,
+    required: false,
+  },
 });
-const emit = defineEmits(["on-change"]);
+const emit = defineEmits(["update:modelValue"]);
 
-const handleChange = (e: Event) => {
-  const target = <HTMLInputElement>e.target;
-  emit("on-change", target.value);
-};
+function handleChange(event: Event) {
+  const value = (event.target as HTMLInputElement).value;
+  emit("update:modelValue", value);
+}
 </script>
 
 <template>
-  <input
-    class="input"
-    :id="props.id"
-    :name="props.name"
-    :placeholder="props.placeholder"
-    :value="props.value"
-    @input="handleChange"
-  />
+  <div>
+    <input
+      class="input"
+      :id="props.id"
+      :name="props.name"
+      :placeholder="props.placeholder"
+      :value="props.modelValue"
+      :maxlength="props.maxLength"
+      @input="handleChange($event)"
+    />
+    <p v-if="props.error">{{ props.error }}</p>
+  </div>
 </template>
 
 <style scoped lang="scss">

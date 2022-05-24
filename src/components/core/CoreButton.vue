@@ -1,11 +1,21 @@
 <script setup lang="ts">
 const emit = defineEmits(["on-click"]);
+
+const props = defineProps({
+  isLoading: {
+    type: Boolean,
+    required: false,
+  },
+});
 </script>
 
 <template>
   <button class="button" @click="() => emit('on-click')" type="button">
-    <div class="button__icon"><slot name="icon"></slot></div>
-    <slot></slot>
+    <div class="button__icon" v-if="$slots.icon"><slot name="icon"></slot></div>
+    <p v-if="props.isLoading">Carregando</p>
+    <div v-else>
+      <slot></slot>
+    </div>
   </button>
 </template>
 
@@ -27,13 +37,14 @@ const emit = defineEmits(["on-click"]);
   align-items: center;
   width: 100%;
   gap: 0.8rem;
+  justify-content: center;
   transition: 0.3s;
 
   &:hover {
     background: var(--color-primary-dark);
   }
 
-  &__icon::v-deep img {
+  &__icon:deep(img) {
     width: 18px;
   }
 }
