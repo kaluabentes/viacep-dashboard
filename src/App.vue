@@ -10,11 +10,7 @@ import AddressCard from "./components/core/AddressCard.vue";
 
 const zipcode = ref("");
 
-const handleZipCodeChange = (value: string) => {
-  zipcode.value = value;
-};
-
-const zipcodes = ["38304-042", "87030-010"];
+const zipcodes = ref<string[]>([]);
 const addresses = [
   {
     id: 1,
@@ -31,6 +27,15 @@ const addresses = [
     zipcode: "87030-025",
   },
 ];
+
+const handleZipCodeChange = (value: string) => {
+  zipcode.value = value;
+};
+
+const handleAddAddress = () => {
+  zipcodes.value = [...zipcodes.value, zipcode.value];
+  zipcode.value = "";
+};
 </script>
 
 <template>
@@ -44,14 +49,14 @@ const addresses = [
           :value="zipcode"
           @on-change="handleZipCodeChange"
         />
-        <CoreButton>
+        <CoreButton @on-click="handleAddAddress">
           <template #icon>
             <img src="@/assets/icone-plus.svg" alt="" />
           </template>
           Adicionar endereço
         </CoreButton>
       </div>
-      <div class="zipcode-list">
+      <div v-if="zipcodes.length" class="zipcode-list">
         <ZipCodeCard
           v-for="zipcode in zipcodes"
           :zipcode="zipcode"
@@ -82,7 +87,7 @@ const addresses = [
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 3.75rem 0;
+  margin: 0 0 3.75rem 0;
 }
 
 .container {
@@ -101,5 +106,10 @@ const addresses = [
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
+  margin-bottom: 3.75rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 </style>
